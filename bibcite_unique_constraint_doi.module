@@ -1,0 +1,33 @@
+<?php 
+
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Entity\EntityTypeInterface;
+use Symfony\Component\Serializer\Exception\UnexpectedValueException;
+
+/**
+ * Implements hook_entity_base_field_info_alter()
+ * and hook_ENTITY_TYPE_presave()
+ */
+
+
+function bibcite_unique_constraint_doi_entity_base_field_info_alter(&$fields, EntityTypeInterface $entity_type) {
+  if ($entity_type->id() === 'bibcite_reference') {
+     if (isset($fields['bibcite_doi'])) {
+        \Drupal::logger('bibcite_unique_constraint_doi')->notice('Attempting to add doi constraint to base');
+        $fields['bibcite_doi']->addConstraint('UniqueField');
+     } 
+  }
+}
+
+
+function bibcite_unique_constraint_doi_bibcite_reference_presave(EntityInterface $entity) {
+  if ($entity->getEntityTypeId() != 'bibcite_reference') {
+    return;
+  }
+  $bibcitedoi = $entity->get('bibcite_doi')->value;
+  $violations = $entity->bibcite_doi->validate();
+
+  if (count($violations) > 0) {
+    throw new UnexpectedValueException("DOI '{$bibcitedoi}' exists.");
+  }
+}

@@ -1,0 +1,9 @@
+name: 'Bibliography & Citation - Unique Constraint DOI'
+type: module
+description: Do not save more than one ref per DOI
+core: 8.x
+core_version_requirement: ^8 || ^9
+package: Bibliography & Citation
+dependencies:
+  - bibcite:bibcite
+  - bibcite:bibcite_entity

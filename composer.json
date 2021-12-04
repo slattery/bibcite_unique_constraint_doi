@@ -1,0 +1,6 @@
+{
+  "name": "slattery/bibcite_unique_constraint_doi",
+  "description": "Do not save more than one ref per DOI",
+  "type": "drupal-custom-module",
+  "license": "GPL-2.0-or-later"
+}
